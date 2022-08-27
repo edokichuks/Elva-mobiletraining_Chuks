@@ -153,8 +153,9 @@ class HomeScreenView extends StatelessWidget {
                                       crossAxisSpacing: 5,
                                       mainAxisExtent: 400 //360,
                                       ),
-                              itemBuilder: (_, index) => FutureProduct(),
-                            ),
+                              itemBuilder: (_, index) =>
+                                  const Text('test trial') //FutureProduct(),
+                              ),
 
                   // if(model.hasError){
                   //  return model.setBusy(false);

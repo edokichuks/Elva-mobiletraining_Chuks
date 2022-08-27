@@ -10,12 +10,14 @@ class ApiServices {
 
   postMethod({data, apiUrl}) async {
     var fullUrl = apiBase + apiUrl;
-    return await http.post(Uri.parse(fullUrl),
-        body: jsonEncode(data),
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json'
-        });
+    return await http.post(
+      Uri.parse(fullUrl),
+      body: jsonEncode(data),
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      },
+    );
   }
 
   static getMethod({getLink}) async {
@@ -25,7 +27,7 @@ class ApiServices {
   }
 
   Future<Product> singleProduct() async {
-    https: //fakestoreapi.com/products?limit=5
+    //https: //fakestoreapi.com/products?limit=5
 
     var res = await getMethod(getLink: 'products/4');
     if (res.statusCode == 200) {

@@ -46,19 +46,6 @@ class Product {
 
     return data;
   }
-
-  Product.fromList(
-    Map<String, dynamic> json,
-  ) {
-    pId = json['id'];
-    pTitle = json['title'];
-    pPrice = json['price'];
-    pDescription = json['description'];
-    pCategory = json['category'];
-    pImagePath = json['image'];
-    pRating = json['rating'];
-    rate = json['rating']['rate'];
-  }
 }
 
 class Rating {

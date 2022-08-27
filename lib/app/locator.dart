@@ -5,6 +5,5 @@ final locator = GetIt.instance;
 
 setupAppLocation() {
   //call in a service
-
   locator.registerLazySingleton(() => ApiServices());
 }
