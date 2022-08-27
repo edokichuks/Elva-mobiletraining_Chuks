@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
-import 'package:muroexe_store/models/product.dart';
+
+import '../../models/product.dart';
 
 @lazySingleton
 class ApiServices {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:muroexe_store/app/locator.dart';
 
-import 'ui/home_screen/home_screen_view.dart';
+import 'src/app/locator.dart';
+import 'src/ui/home_screen/home_screen_view.dart';
+import 'src/ui/splash_screen/splash_screen_view.dart';
 
 void main() async {
   await setupAppLocation();
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         splashColor: Colors.transparent,
         primarySwatch: Colors.grey,
       ),
-      home: const HomeScreenView(),
+      home: const SplashScreenView(),
     );
   }
 }

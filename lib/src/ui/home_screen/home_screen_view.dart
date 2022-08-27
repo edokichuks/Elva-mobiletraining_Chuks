@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:muroexe_store/src/core/constants/app_color.dart';
 import 'package:stacked/stacked.dart';
 import 'home_screen_viewmodel.dart';
 
@@ -14,7 +15,8 @@ class HomeScreenView extends StatelessWidget {
         initialiseSpecialViewModelsOnce: true,
         builder: (context, model, child) {
           return Scaffold(
-            backgroundColor: Colors.white, //Colors.grey.shade200,
+            backgroundColor: Muroexe.mainColor,
+            // backgroundColor: Colors.grey.shade100, //Colors.white, //
             appBar: AppBar(
               elevation: 0,
               backgroundColor: Colors.grey.shade100,

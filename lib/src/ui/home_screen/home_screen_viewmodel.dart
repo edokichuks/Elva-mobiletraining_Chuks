@@ -1,9 +1,8 @@
 import 'dart:core';
-
-import 'package:muroexe_store/app/locator.dart';
-import 'package:muroexe_store/models/product.dart';
-import 'package:muroexe_store/services/api_services/api_servcies.dart';
 import 'package:stacked/stacked.dart';
+import '../../app/locator.dart';
+import '../../models/product.dart';
+import '../../services/api_services/api_servcies.dart';
 
 class HomeScreenViewModel extends BaseViewModel {
   final String _title = 'Sneakers';
