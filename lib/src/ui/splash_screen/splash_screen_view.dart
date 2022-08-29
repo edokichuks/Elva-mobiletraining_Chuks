@@ -1,28 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:muroexe_store/src/core/constants/app_color.dart';
-import 'package:muroexe_store/src/ui/home_screen/home_screen_view.dart';
-import 'package:muroexe_store/src/ui/splash_screen/splash_screen_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
-class SplashScreenView extends StatefulWidget {
+import '../../core/constants/app_color.dart';
+import 'splash_screen_viewmodel.dart';
+
+class SplashScreenView extends StatelessWidget {
   const SplashScreenView({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreenView> createState() => _SplashScreenViewState();
-}
-
-class _SplashScreenViewState extends State<SplashScreenView> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    waitTime();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<SplashScreenViewModel>.nonReactive(
+    return ViewModelBuilder<SplashScreenViewModel>.reactive(
       viewModelBuilder: () => SplashScreenViewModel(),
+      onModelReady: (viewModel) => viewModel.waitTime(context),
       builder: (context, data, child) => Scaffold(
         backgroundColor: Muroexe.mainColor,
         body: Center(
@@ -45,20 +34,6 @@ class _SplashScreenViewState extends State<SplashScreenView> {
                   ),
                 ]),
           ),
-        ),
-      ),
-    );
-  }
-
-  void waitTime() async {
-    await Future.delayed(
-      const Duration(
-        seconds: 3,
-      ),
-      () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const HomeScreenView(),
         ),
       ),
     );
