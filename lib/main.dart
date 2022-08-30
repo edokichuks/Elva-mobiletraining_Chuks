@@ -16,13 +16,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Muroexe store',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          splashColor: Colors.transparent,
-          primarySwatch: Colors.grey,
-        ),
-        home: MultipleFuturesExampleView() // const SplashScreenView(),
-        );
+      title: 'Muroexe store',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        splashColor: Colors.transparent,
+        primarySwatch: Colors.grey,
+      ),
+      home: const SplashScreenView(),
+    );
   }
 }
