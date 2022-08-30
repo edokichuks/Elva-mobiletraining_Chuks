@@ -15,8 +15,8 @@ class HomeScreenView extends StatelessWidget {
         initialiseSpecialViewModelsOnce: true,
         builder: (context, model, child) {
           return Scaffold(
-            backgroundColor: Muroexe.mainColor,
-            // backgroundColor: Colors.grey.shade100, //Colors.white, //
+            backgroundColor: Colors.grey.shade50, //Muroexe.mainColor,
+
             appBar: AppBar(
               elevation: 0,
               backgroundColor: Colors.grey.shade100,
@@ -59,11 +59,28 @@ class HomeScreenView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  model.product == null
-                      ? const Center(
-                          child: Text('Check your network connections'))
+                  const Divider(
+                    thickness: 2,
+                  ),
+                  Center(
+                    child: Text(
+                      model.advertText,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  model.hasError
+                      ? Center(child: Text(model.networkErrorText))
                       : model.isBusy
-                          ? const CircularProgressIndicator()
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ))
                           : Stack(
                               children: [
                                 Image.network(
@@ -113,10 +130,12 @@ class HomeScreenView extends StatelessWidget {
                     ),
                   ),
                   model.hasError
-                      ? const Center(
-                          child: Text('Check your network connections'))
+                      ? Center(child: Text(model.networkErrorText))
                       : model.isBusy
-                          ? const CircularProgressIndicator()
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ))
                           : GridView.builder(
                               itemCount: 4,
                               shrinkWrap: true,
