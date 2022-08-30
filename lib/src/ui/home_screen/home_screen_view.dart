@@ -11,7 +11,9 @@ class HomeScreenView extends StatelessWidget {
     return ViewModelBuilder<HomeScreenViewModel>.reactive(
         viewModelBuilder: () => HomeScreenViewModel(),
         disposeViewModel: false,
-        onModelReady: (model) => model.singleProduct(),
+        onModelReady: (model) => model.limitedProducts(),
+
+        ///This line does not mean
         initialiseSpecialViewModelsOnce: true,
         builder: (context, model, child) {
           return Scaffold(
@@ -148,7 +150,7 @@ class HomeScreenView extends StatelessWidget {
                                       mainAxisExtent: 400 //360,
                                       ),
                               itemBuilder: (_, index) =>
-                                  const Text('test trial') //FutureProduct(),
+                                  Text('test trial') //FutureProduct(),
                               ),
 
                   // if(model.hasError){

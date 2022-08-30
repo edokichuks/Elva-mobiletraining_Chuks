@@ -46,7 +46,7 @@ class ApiServices {
 
     if (res.statusCode == 200) {
       List<Product> data = List<Product>.from(
-          json.decode(res.body).map((x) => Product.fromJson(x)));
+          json.decode(res.body).map((x) => Product.fromJson(x))).toList();
       //Product.fromJson(json.decode(res.body as List)).;
       return data;
     } else {

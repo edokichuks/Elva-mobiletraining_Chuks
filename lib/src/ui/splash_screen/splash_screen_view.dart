@@ -18,7 +18,7 @@ class SplashScreenView extends StatelessWidget {
           child: RichText(
             overflow: TextOverflow.fade,
             text: TextSpan(
-                text: data.namePart1, //'M U R O ',
+                text: data.namePart1,
                 style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w900,

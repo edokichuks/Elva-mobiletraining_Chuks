@@ -15,6 +15,10 @@ class HomeScreenViewModel extends FutureViewModel {
   String networkErrorText = 'Check your network connections';
 
   Product? _product;
+  List<Product>? _limitedProductData;
+
+  List<Product>? get limitedProductData => _limitedProductData;
+
   Product? get product => _product;
 
   Future singleProduct() async {
@@ -22,9 +26,16 @@ class HomeScreenViewModel extends FutureViewModel {
     final Product result = await apiServices.singleProduct();
 
     _product = result;
-    var timeOut = await runBusyFuture(requestTimeOut());
+    // var timeOut = await runBusyFuture(requestTimeOut());
 
     //  setBusy(false);
+  }
+
+  Future<List<Product>> limitedProducts() async {
+    final List<Product> limited = await apiServices.limitedProduct();
+
+    _limitedProductData = limited;
+    return _limitedProductData as List<Product>;
   }
 
   Future requestTimeOut() async {
@@ -36,5 +47,6 @@ class HomeScreenViewModel extends FutureViewModel {
   @override
   Future futureToRun() {
     return singleProduct();
+    // return limitedProducts();
   }
 }
