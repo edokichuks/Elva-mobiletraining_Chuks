@@ -69,33 +69,40 @@ class SignInView extends StatelessWidget {
                   ),
                   margin: const EdgeInsets.symmetric(vertical: 20),
                   padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'Email',
-                        style: TextStyle(fontSize: 16),
+                      const Align(
+                        child: Text(
+                          'Email',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        alignment: Alignment.centerLeft,
                       ),
                       Row(
                         children: [
                           Expanded(
-                              child: TextField(
-                            ///trying to toggle the focus scope here to enable filled textfield and unfilled textfield when not in focus
-                            ///  focusNode: FocusScope.of(context).previousFocus() ? true : false,
-                            onTap: model.toggleFilled,
-                            decoration: InputDecoration(
-                              filled: model.isFilled,
+                              child: Focus(
+                            onFocusChange: (value) {
+                              value = model.isFilled = true;
+                              print('The value is now ' + value.toString());
+                            },
+                            child: TextField(
+                              keyboardType: TextInputType.emailAddress,
+                              cursorColor: Muroexe.smallTextColor,
 
-                              fillColor: Colors.grey.shade200,
-
-                              // focusedBorder: OutlineInputBorder(
-                              //
-                              //   borderSide: BorderSide(
-                              //       color: Colors.red,
-                              //       style: BorderStyle.values[0],
-                              //       width: 2),
-                              // ),
+                              ///trying to toggle the focus scope here to enable filled textfield and unfilled textfield when not in focus
+                              ///  focusNode: FocusScope.of(context).previousFocus() ? true : false,
+                              onTap: model.toggleFilled,
+                              decoration: InputDecoration(
+                                filled: model.isFilled,
+                                fillColor: Colors.grey.shade200,
+                                focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 3, color: Muroexe.underLineColor),
+                                ),
+                              ),
                             ),
                           )),
                         ],
@@ -103,15 +110,63 @@ class SignInView extends StatelessWidget {
                       const SizedBox(
                         height: 30,
                       ),
-                      Text(
-                        'Password',
-                        style: TextStyle(fontSize: 16),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Password',
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
                       Row(
                         children: [
-                          Expanded(child: TextField()),
+                          Expanded(
+                              child: TextField(
+                            toolbarOptions: const ToolbarOptions(
+                              copy: true,
+                              paste: true,
+                              cut: true,
+                              selectAll: true,
+                            ),
+                            keyboardType: TextInputType.visiblePassword,
+                            cursorColor: Muroexe.smallTextColor,
+                            obscureText: model.isHidden,
+                            decoration: InputDecoration(
+                                focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 3, color: Muroexe.underLineColor),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: model.toggleHidden,
+                                  icon: model.isHidden
+                                      ? Icon(Icons.visibility_off,
+                                          color: Muroexe.underLineColor)
+                                      : Icon(Icons.remove_red_eye),
+                                )),
+                          )),
                         ],
                       ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        model.forgotPassword,
+                        style: const TextStyle(color: Muroexe.smallTextColor),
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.grey.shade900),
+                          foregroundColor: MaterialStateProperty.all(
+                              const Color(0xff3F00FF)),
+                          overlayColor: MaterialStateProperty.all(
+                              const Color(0xff3F00FF)),
+                        ),
+                        onPressed: () {},
+                        child: const Text(
+                          'Sign in',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
                     ],
                   ),
                 ),
