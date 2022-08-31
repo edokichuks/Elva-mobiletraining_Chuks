@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:muroexe_store/src/core/constants/app_color.dart';
 import 'package:muroexe_store/src/ui/sign_in_screen/sign_in_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -19,10 +20,10 @@ class SignInView extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.search,
                 size: 30,
-                color: Colors.grey.shade900,
+                color: Muroexe.textColor,
               ),
               visualDensity: VisualDensity.compact,
             ),
@@ -31,11 +32,11 @@ class SignInView extends StatelessWidget {
             overflow: TextOverflow.fade,
             text: TextSpan(
                 text: 'M U R O ',
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 25,
                     overflow: TextOverflow.fade,
                     fontWeight: FontWeight.w900,
-                    color: Colors.grey.shade900,
+                    color: Muroexe.textColor,
                     letterSpacing: 3.0),
                 children: [
                   TextSpan(
@@ -80,11 +81,13 @@ class SignInView extends StatelessWidget {
                         children: [
                           Expanded(
                               child: TextField(
+                            ///trying to toggle the focus scope here to enable filled textfield and unfilled textfield when not in focus
+                            ///  focusNode: FocusScope.of(context).previousFocus() ? true : false,
                             onTap: model.toggleFilled,
                             decoration: InputDecoration(
                               filled: model.isFilled,
 
-                              fillColor: Colors.grey.shade100,
+                              fillColor: Colors.grey.shade200,
 
                               // focusedBorder: OutlineInputBorder(
                               //
