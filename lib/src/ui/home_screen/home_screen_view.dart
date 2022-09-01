@@ -142,24 +142,103 @@ class HomeScreenView extends StatelessWidget {
                               strokeWidth: 2,
                             ))
                           : GridView.builder(
-                              itemCount: 4,
+                              itemCount: 4, //model.limitedProductData!.length,
                               shrinkWrap: true,
                               //addRepaintBoundaries: true,
                               physics: const NeverScrollableScrollPhysics(),
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 5,
-                                      mainAxisExtent: 400 //360,
-                                      ),
-                              itemBuilder: (_, index) => Text(model
-                                  .limitedProductData![index].title
-                                  .toString()) //FutureProduct(),
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10,
+                                mainAxisExtent: 300,
                               ),
+                              itemBuilder: (_, index) =>
 
-                  // if(model.hasError){
-                  //  return model.setBusy(false);
-                  // },
+                                  ///RETURN IN ERROR SHOWS UP
+                                  // Text(model
+                                  // .limitedProductData![index].title
+                                  // .toString())
+                                  Container(
+                                height: 350,
+                                width: 150,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white, //Colors.grey.shade200,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        Image.network(
+                                          model.limitedProductData![index].image
+                                              .toString(),
+                                          height: 200,
+                                          width: 250,
+                                          alignment: Alignment.center,
+                                          fit: BoxFit.contain,
+                                        ),
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Container(
+                                            height: 30,
+                                            width: 40,
+                                            color: Colors.red.shade700,
+                                            alignment: Alignment.center,
+                                            child: const Text(
+                                              '60%',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                            alignment: Alignment.topRight,
+                                            child: Icon(
+                                              Icons.favorite_border_outlined,
+                                              color: Colors.grey.shade800,
+                                              size: 30,
+                                            )),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 6.0, horizontal: 12),
+                                      child: Text(
+                                        model.limitedProductData![index].title
+                                            .toString(),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                          text:
+                                              '\$${model.limitedProductData![index].price.toString()} ',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              overflow: TextOverflow.fade,
+                                              fontWeight: FontWeight.w800,
+                                              color: Colors.red
+                                                  .shade800 //Colors.grey.shade800,
+                                              ),
+                                          children: [
+                                            TextSpan(
+                                                text: '\$99.00',
+                                                style: TextStyle(
+                                                  color: Colors.grey.shade800,
+                                                  fontWeight: FontWeight.w600,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                ))
+                                          ]),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
                   const SizedBox(
                     height: 30,
                   ),

@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         splashColor: Colors.transparent,
         primarySwatch: Colors.grey,
       ),
-      home: const SignInView(),
+      home: const HomeScreenView(),
     );
   }
 }
