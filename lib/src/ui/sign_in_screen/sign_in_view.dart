@@ -1,6 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:muroexe_store/src/core/constants/app_color.dart';
+import 'package:muroexe_store/src/core/constants/helper/show_snackbar.dart';
+import 'package:muroexe_store/src/models/signin.dart';
+import 'package:muroexe_store/src/services/api_services/api_services.dart';
 import 'package:muroexe_store/src/ui/sign_in_screen/sign_in_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -86,14 +88,10 @@ class SignInView extends StatelessWidget {
                               child: Focus(
                             onFocusChange: (value) {
                               value = model.isFilled = true;
-                              print('The value is now ' + value.toString());
                             },
                             child: TextField(
                               keyboardType: TextInputType.emailAddress,
                               cursorColor: Muroexe.smallTextColor,
-
-                              ///trying to toggle the focus scope here to enable filled textfield and unfilled textfield when not in focus
-                              ///  focusNode: FocusScope.of(context).previousFocus() ? true : false,
                               onTap: model.toggleFilled,
                               decoration: InputDecoration(
                                 filled: model.isFilled,
@@ -138,9 +136,9 @@ class SignInView extends StatelessWidget {
                                 suffixIcon: IconButton(
                                   onPressed: model.toggleHidden,
                                   icon: model.isHidden
-                                      ? Icon(Icons.visibility_off,
+                                      ? const Icon(Icons.visibility_off,
                                           color: Muroexe.underLineColor)
-                                      : Icon(Icons.remove_red_eye),
+                                      : const Icon(Icons.remove_red_eye),
                                 )),
                           )),
                         ],
@@ -150,7 +148,10 @@ class SignInView extends StatelessWidget {
                       ),
                       Text(
                         model.forgotPassword,
-                        style: const TextStyle(color: Muroexe.smallTextColor),
+                        style: const TextStyle(
+                          color: Muroexe.smallTextColor,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       ElevatedButton(
                         style: ButtonStyle(
@@ -161,10 +162,35 @@ class SignInView extends StatelessWidget {
                           overlayColor: MaterialStateProperty.all(
                               const Color(0xff3F00FF)),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          // showSnackBar(context, 'UI view test trial');
+                          //   ApiServices().test();
+                          var signInData = const Signin(
+                              password: '83r5^_', username: 'mor_2314');
+                          ApiServices().signIn(context, signInData);
+                        },
                         child: const Text(
                           'Sign in',
                           style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Divider(
+                        thickness: 1.5,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () => showSnackBar(context, 'Todo screens'),
+                        child: Text(
+                          model.createAccount,
+                          style: const TextStyle(
+                            color: Muroexe.smallTextColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       )
                     ],

@@ -2,7 +2,7 @@ import 'dart:core';
 import 'package:stacked/stacked.dart';
 import '../../app/locator.dart';
 import '../../models/product.dart';
-import '../../services/api_services/api_servcies.dart';
+import '../../services/api_services/api_services.dart';
 
 class HomeScreenViewModel extends FutureViewModel {
   final String _title = 'Sneakers';

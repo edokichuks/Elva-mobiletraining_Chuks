@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import '../services/api_services/api_servcies.dart';
+import '../services/api_services/api_services.dart';
 
 final locator = GetIt.instance;
 
