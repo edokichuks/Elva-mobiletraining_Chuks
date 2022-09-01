@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:muroexe_store/src/core/constants/helper/show_snackbar.dart';
+import 'package:muroexe_store/src/models/product_list/product_list.dart';
 import 'package:muroexe_store/src/models/signin.dart';
 
 import '../../models/product.dart';
@@ -51,13 +52,16 @@ class ApiServices {
 
   // List<int> loop = [0, 1, 2, 3];
 
-  Future<List<Product>> limitedProduct() async {
+  Future<List<ProductList>> limitedProduct() async {
     var res = await getMethod(getLink: 'products?limit=5');
 
     if (res.statusCode == 200) {
-      List<Product> data = List<Product>.from(
-          json.decode(res.body).map((x) => Product.fromJson(x))).toList();
+      List<ProductList> data = List<ProductList>.from(
+              json.decode(res.body).map((x) => ProductList.fromProductList(x)))
+          .toList();
       //Product.fromJson(json.decode(res.body as List)).;
+      print('this is the limited product');
+      print(data);
       return data;
     } else {
       return throw 'Error From Network';
@@ -66,6 +70,7 @@ class ApiServices {
 
   Future signIn(context, Signin signInData) async {
     var fullLink = 'https://fakestoreapi.com/auth/login';
+
     var res = await http.post(
       Uri.parse(fullLink),
       body: signInData.toJson(),
@@ -88,14 +93,22 @@ class ApiServices {
       if (res.statusCode == 200) {
         print(res.body);
 
-        print(resText);
-        if (res.body.compareTo('username or password is incorrect') == true) {
+        if (res.body.toString() == 'username or password is incorrect') {
           showSnackBar(context, 'username or password is incorrect');
         } else {
+          print(resText);
           showSnackBar(context, 'Signed In Successfully');
         }
 
+        print('''
+          res body
+          ${res.body}
+          ''');
+
         //return resText;
+      } else if (res.statusCode == 401) {
+        print('error user name and password');
+        showSnackBar(context, res.body);
       } else {
         print(res.statusCode);
         print(res.reasonPhrase);

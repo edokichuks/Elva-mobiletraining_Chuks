@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'package:muroexe_store/src/models/signin.dart';
+import 'package:muroexe_store/src/services/api_services/api_services.dart';
 import 'package:stacked/stacked.dart';
 
 class SignInViewModel extends FutureViewModel {
   String title = 'Log in to your account';
   String forgotPassword = 'Forgot your password?';
   String createAccount = 'No account? Create one here >';
+  Signin signin = Signin();
+  BuildContext get context => context;
+
   bool _isFilled = false;
   bool _isHidden = true;
 
@@ -23,9 +28,17 @@ class SignInViewModel extends FutureViewModel {
     notifyListeners();
   }
 
+  Future signIn(context, Signin signin) async {
+    var response = ApiServices().signIn(context, signin);
+    return response;
+  }
+
   @override
   Future futureToRun() {
     // TODO: implement futureToRun
-    throw UnimplementedError();
+    return signIn(
+      context,
+      signin,
+    );
   }
 }

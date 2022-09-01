@@ -163,11 +163,15 @@ class SignInView extends StatelessWidget {
                               const Color(0xff3F00FF)),
                         ),
                         onPressed: () {
-                          // showSnackBar(context, 'UI view test trial');
-                          //   ApiServices().test();
-                          var signInData = const Signin(
-                              password: '83r5^_', username: 'mor_2314');
-                          ApiServices().signIn(context, signInData);
+                          model.signIn(
+                            context,
+                            const Signin(
+                                username: 'mor_2314', password: '83r5^_'),
+                          );
+
+                          // var signInData = const Signin(
+                          //     password: '83r5^_', username: 'mor_2314');
+                          // ApiServices().signIn(context, signInData);
                         },
                         child: const Text(
                           'Sign in',
@@ -192,7 +196,7 @@ class SignInView extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

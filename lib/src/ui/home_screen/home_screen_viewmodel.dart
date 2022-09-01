@@ -2,6 +2,7 @@ import 'dart:core';
 import 'package:stacked/stacked.dart';
 import '../../app/locator.dart';
 import '../../models/product.dart';
+import '../../models/product_list/product_list.dart';
 import '../../services/api_services/api_services.dart';
 
 class HomeScreenViewModel extends FutureViewModel {
@@ -15,9 +16,9 @@ class HomeScreenViewModel extends FutureViewModel {
   String networkErrorText = 'Check your network connections';
 
   Product? _product;
-  List<Product>? _limitedProductData;
+  List<ProductList>? _limitedProductData;
 
-  List<Product>? get limitedProductData => _limitedProductData;
+  List<ProductList>? get limitedProductData => _limitedProductData;
 
   Product? get product => _product;
 
@@ -31,11 +32,11 @@ class HomeScreenViewModel extends FutureViewModel {
     //  setBusy(false);
   }
 
-  Future<List<Product>> limitedProducts() async {
-    final List<Product> limited = await apiServices.limitedProduct();
+  Future<List<ProductList>> limitedProducts() async {
+    final List<ProductList> limited = await apiServices.limitedProduct();
 
     _limitedProductData = limited;
-    return _limitedProductData as List<Product>;
+    return _limitedProductData as List<ProductList>;
   }
 
   Future requestTimeOut() async {
@@ -46,7 +47,7 @@ class HomeScreenViewModel extends FutureViewModel {
 
   @override
   Future futureToRun() {
-    return singleProduct();
-    // return limitedProducts();
+    //return singleProduct();
+    return limitedProducts();
   }
 }

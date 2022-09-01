@@ -83,43 +83,46 @@ class HomeScreenView extends StatelessWidget {
                               child: CircularProgressIndicator(
                               strokeWidth: 2,
                             ))
-                          : Stack(
-                              children: [
-                                Image.network(
-                                  model.product!.pImagePath,
-                                  //model.data!.pImagePath,
-                                  filterQuality: FilterQuality.high,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(24.0),
-                                  child: RichText(
-                                    text: TextSpan(
-                                        text: 'EXTRA',
-                                        style: TextStyle(
-                                          fontSize: 40,
-                                          color: Colors.grey.shade800,
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text: '\nSALES\n',
-                                            style: TextStyle(
-                                              fontSize: 60,
-                                              color: Colors.grey.shade200,
-                                              fontWeight: FontWeight.w900,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: 'Up to 60%',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.grey.shade800,
-                                            ),
-                                          ),
-                                        ]),
-                                  ),
-                                )
-                              ],
-                            ),
+                          : Text('hello'),
+
+                  ///FIRST API CALL
+                  // Stack(
+                  //             children: [
+                  //               Image.network(
+                  //                 model.product!.pImagePath,
+                  //                 //model.data!.pImagePath,
+                  //                 filterQuality: FilterQuality.high,
+                  //               ),
+                  //               Padding(
+                  //                 padding: const EdgeInsets.all(24.0),
+                  //                 child: RichText(
+                  //                   text: TextSpan(
+                  //                       text: 'EXTRA',
+                  //                       style: TextStyle(
+                  //                         fontSize: 40,
+                  //                         color: Colors.grey.shade800,
+                  //                       ),
+                  //                       children: [
+                  //                         TextSpan(
+                  //                           text: '\nSALES\n',
+                  //                           style: TextStyle(
+                  //                             fontSize: 60,
+                  //                             color: Colors.grey.shade200,
+                  //                             fontWeight: FontWeight.w900,
+                  //                           ),
+                  //                         ),
+                  //                         TextSpan(
+                  //                           text: 'Up to 60%',
+                  //                           style: TextStyle(
+                  //                             fontSize: 20,
+                  //                             color: Colors.grey.shade800,
+                  //                           ),
+                  //                         ),
+                  //                       ]),
+                  //                 ),
+                  //               )
+                  //             ],
+                  //           ),
                   Center(
                     heightFactor: 2.0,
                     child: Text(
@@ -149,8 +152,9 @@ class HomeScreenView extends StatelessWidget {
                                       crossAxisSpacing: 5,
                                       mainAxisExtent: 400 //360,
                                       ),
-                              itemBuilder: (_, index) =>
-                                  Text('test trial') //FutureProduct(),
+                              itemBuilder: (_, index) => Text(model
+                                  .limitedProductData![index].title
+                                  .toString()) //FutureProduct(),
                               ),
 
                   // if(model.hasError){

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:muroexe_store/src/core/constants/app_color.dart';
 
-void showSnackBar(BuildContext context, String message) {
+void showSnackBar(BuildContext? context, String message) {
   final snackBar = SnackBar(
     duration: const Duration(milliseconds: 1200),
     elevation: 10,
@@ -22,5 +22,5 @@ void showSnackBar(BuildContext context, String message) {
       ),
     ),
   );
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  ScaffoldMessenger.of(context!).showSnackBar(snackBar);
 }
