@@ -73,16 +73,18 @@ class ApiServices {
         'Accept': 'application/json'
       },
     );
+    // print('This is the res ${res.body}');
 
-    var token = jsonDecode(res.body);
-    var resText = token['token'];
     try {
       if (res.statusCode == 200) {
         print(res.body);
+        showSnackBar(context, 'before the 200');
 
         if (res.body.toString() == 'username or password is incorrect') {
           showSnackBar(context, 'username or password is incorrect');
         } else {
+          var token = jsonDecode(res.body);
+          var resText = token['token'];
           print(resText);
           showSnackBar(context, 'Signed In Successfully');
         }
