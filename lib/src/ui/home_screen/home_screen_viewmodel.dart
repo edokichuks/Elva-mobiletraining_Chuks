@@ -1,11 +1,16 @@
 import 'dart:core';
+import 'package:flutter/material.dart';
+import 'package:muroexe_store/src/ui/sign_in_screen/sign_in_view.dart';
 import 'package:stacked/stacked.dart';
 import '../../app/locator.dart';
 import '../../models/product.dart';
 import '../../models/product_list/product_list.dart';
 import '../../services/api_services/api_services.dart';
 
-class HomeScreenViewModel extends FutureViewModel {
+const String _singleProduct = 'singleProduct';
+const String _limitedProduct = 'limitedProduct';
+
+class HomeScreenViewModel extends MultipleFutureViewModel {
   final String _title = 'Sneakers';
 
   final ApiServices apiServices = locator<ApiServices>();
@@ -15,27 +20,38 @@ class HomeScreenViewModel extends FutureViewModel {
   String advertText = '-10% First APP purchase -> Voucher: APP10';
   String networkErrorText = 'Check your network connections';
 
+  ///type definition
   Product? _product;
   List<ProductList>? _limitedProductData;
 
-  List<ProductList>? get limitedProductData => _limitedProductData;
+  ///Map data made accessible
+  List<ProductList>? get limitedProductData => dataMap![_limitedProduct];
+  Product? get product => dataMap![_singleProduct];
 
-  Product? get product => _product;
+  ///check for busy....isBusy?
+  bool get limitedProductLoading => busy(_limitedProduct);
+  bool get singleProductLoading => busy(_singleProduct);
 
-  Future singleProduct() async {
-    // setBusy(true);
+  void navigateToSignIn(context) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const SignInView(),
+        ),
+      );
+
+  Future<Product> singleProduct() async {
     final Product result = await apiServices.singleProduct();
 
     _product = result;
+    return result;
     // var timeOut = await runBusyFuture(requestTimeOut());
-
-    //  setBusy(false);
   }
 
   Future<List<ProductList>> limitedProducts() async {
     final List<ProductList> limited = await apiServices.limitedProduct();
 
     _limitedProductData = limited;
+
     return _limitedProductData as List<ProductList>;
   }
 
@@ -46,8 +62,9 @@ class HomeScreenViewModel extends FutureViewModel {
   }
 
   @override
-  Future futureToRun() {
-    //return singleProduct();
-    return limitedProducts();
-  }
+  // TODO: implement futuresMap
+  Map<String, Future Function()> get futuresMap => {
+        _singleProduct: singleProduct,
+        _limitedProduct: limitedProducts,
+      };
 }

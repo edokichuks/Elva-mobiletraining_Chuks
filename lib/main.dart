@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'src/app/locator.dart';
 import 'src/ui/home_screen/home_screen_view.dart';
-import 'src/ui/home_screen/test_multiple_view.dart';
-import 'src/ui/sign_in_screen/sign_in_view.dart';
-import 'src/ui/splash_screen/splash_screen_view.dart';
 
 void main() async {
   await setupAppLocation();

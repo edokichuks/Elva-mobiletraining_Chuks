@@ -12,8 +12,6 @@ class HomeScreenView extends StatelessWidget {
         viewModelBuilder: () => HomeScreenViewModel(),
         disposeViewModel: false,
         onModelReady: (model) => model.limitedProducts(),
-
-        ///This line does not mean
         initialiseSpecialViewModelsOnce: true,
         builder: (context, model, child) {
           return Scaffold(
@@ -24,7 +22,7 @@ class HomeScreenView extends StatelessWidget {
               backgroundColor: Colors.grey.shade100,
               actions: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => model.navigateToSignIn(context),
                   icon: Icon(
                     Icons.search,
                     size: 30,
@@ -78,51 +76,47 @@ class HomeScreenView extends StatelessWidget {
                   ),
                   model.hasError
                       ? Center(child: Text(model.networkErrorText))
-                      : model.isBusy
+                      : model.singleProductLoading
                           ? const Center(
                               child: CircularProgressIndicator(
                               strokeWidth: 2,
                             ))
-                          : Text('hello'),
-
-                  ///FIRST API CALL
-                  // Stack(
-                  //             children: [
-                  //               Image.network(
-                  //                 model.product!.pImagePath,
-                  //                 //model.data!.pImagePath,
-                  //                 filterQuality: FilterQuality.high,
-                  //               ),
-                  //               Padding(
-                  //                 padding: const EdgeInsets.all(24.0),
-                  //                 child: RichText(
-                  //                   text: TextSpan(
-                  //                       text: 'EXTRA',
-                  //                       style: TextStyle(
-                  //                         fontSize: 40,
-                  //                         color: Colors.grey.shade800,
-                  //                       ),
-                  //                       children: [
-                  //                         TextSpan(
-                  //                           text: '\nSALES\n',
-                  //                           style: TextStyle(
-                  //                             fontSize: 60,
-                  //                             color: Colors.grey.shade200,
-                  //                             fontWeight: FontWeight.w900,
-                  //                           ),
-                  //                         ),
-                  //                         TextSpan(
-                  //                           text: 'Up to 60%',
-                  //                           style: TextStyle(
-                  //                             fontSize: 20,
-                  //                             color: Colors.grey.shade800,
-                  //                           ),
-                  //                         ),
-                  //                       ]),
-                  //                 ),
-                  //               )
-                  //             ],
-                  //           ),
+                          : Stack(
+                              children: [
+                                Image.network(
+                                  model.product!.pImagePath,
+                                  filterQuality: FilterQuality.high,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(24.0),
+                                  child: RichText(
+                                    text: TextSpan(
+                                        text: 'EXTRA',
+                                        style: TextStyle(
+                                          fontSize: 40,
+                                          color: Colors.grey.shade800,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: '\nSALES\n',
+                                            style: TextStyle(
+                                              fontSize: 60,
+                                              color: Colors.grey.shade200,
+                                              fontWeight: FontWeight.w900,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: 'Up to 60%',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.grey.shade800,
+                                            ),
+                                          ),
+                                        ]),
+                                  ),
+                                )
+                              ],
+                            ),
                   Center(
                     heightFactor: 2.0,
                     child: Text(
@@ -136,7 +130,7 @@ class HomeScreenView extends StatelessWidget {
                   ),
                   model.hasError
                       ? Center(child: Text(model.networkErrorText))
-                      : model.isBusy
+                      : model.limitedProductLoading
                           ? const Center(
                               child: CircularProgressIndicator(
                               strokeWidth: 2,
@@ -152,13 +146,7 @@ class HomeScreenView extends StatelessWidget {
                                 crossAxisSpacing: 10,
                                 mainAxisExtent: 300,
                               ),
-                              itemBuilder: (_, index) =>
-
-                                  ///RETURN IN ERROR SHOWS UP
-                                  // Text(model
-                                  // .limitedProductData![index].title
-                                  // .toString())
-                                  Container(
+                              itemBuilder: (_, index) => Container(
                                 height: 350,
                                 width: 150,
                                 decoration: const BoxDecoration(
@@ -238,7 +226,6 @@ class HomeScreenView extends StatelessWidget {
                                 ),
                               ),
                             ),
-
                   const SizedBox(
                     height: 30,
                   ),

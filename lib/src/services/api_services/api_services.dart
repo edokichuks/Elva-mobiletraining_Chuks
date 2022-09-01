@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:muroexe_store/src/core/constants/helper/show_snackbar.dart';
@@ -11,7 +10,6 @@ import '../../models/product.dart';
 
 @lazySingleton
 class ApiServices {
-  //
   static const String apiBase = 'https://fakestoreapi.com/';
 
   postMethod({data, apiUrl}) async {
@@ -27,10 +25,6 @@ class ApiServices {
 
     var response = await request.send();
     return response;
-    // return await http.post(Uri.parse(fullUrl),
-    //     body: json.encode(data), headers: headers
-    //     // headers: {'Content-type': 'application/json'},
-    //     );
   }
 
   static getMethod({getLink}) async {
@@ -40,17 +34,13 @@ class ApiServices {
   }
 
   Future<Product> singleProduct() async {
-    //https: //fakestoreapi.com/products?limit=5
-
-    var res = await getMethod(getLink: 'products/4');
+    var res = await getMethod(getLink: 'products/2');
     if (res.statusCode == 200) {
       return Product.fromJson(json.decode(res.body));
     } else {
       return throw 'Error From Network';
     }
   }
-
-  // List<int> loop = [0, 1, 2, 3];
 
   Future<List<ProductList>> limitedProduct() async {
     var res = await getMethod(getLink: 'products?limit=5');
@@ -59,9 +49,6 @@ class ApiServices {
       List<ProductList> data = List<ProductList>.from(
               json.decode(res.body).map((x) => ProductList.fromProductList(x)))
           .toList();
-      //Product.fromJson(json.decode(res.body as List)).;
-      print('this is the limited product');
-      print(data);
       return data;
     } else {
       return throw 'Error From Network';
