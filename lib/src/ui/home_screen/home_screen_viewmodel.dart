@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:muroexe_store/src/services/base/failutre.dart';
 import 'package:muroexe_store/src/ui/sign_in_screen/sign_in_view.dart';
 import 'package:stacked/stacked.dart';
 import '../../app/locator.dart';
@@ -39,19 +40,47 @@ class HomeScreenViewModel extends MultipleFutureViewModel {
         ),
       );
 
-  Future<Product> singleProduct() async {
-    final Product result = await apiServices.singleProduct();
+  Future<Product?> singleProduct() async {
+    setBusy(true);
+    try {
+      final Product? result = await apiServices.singleProduct();
 
-    _product = result;
-    return result;
-    // var timeOut = await runBusyFuture(requestTimeOut());
+      _product = result;
+      return result!;
+      // var timeOut = await runBusyFuture(requestTimeOut());
+    } on Failure catch (ex, stackTrace) {
+      print('''
+      This is the exception
+      ${ex.toString()},
+      located at: $stackTrace
+      ''');
+    } finally {
+      setBusy(false);
+    }
+
+    ///to remove this line
+    return _product;
   }
 
   Future<List<ProductList>> limitedProducts() async {
-    final List<ProductList> limited = await apiServices.limitedProduct();
+    setBusy(true);
 
-    _limitedProductData = limited;
+    try {
+      final List<ProductList>? limited = await apiServices.limitedProduct();
 
+      _limitedProductData = limited;
+
+      return _limitedProductData as List<ProductList>;
+    } on Failure catch (ex) {
+      print('''
+      This is the exception
+      ${ex.message}
+      ''');
+    } finally {
+      setBusy(false);
+    }
+
+    ///remove this line of code
     return _limitedProductData as List<ProductList>;
   }
 
@@ -62,7 +91,6 @@ class HomeScreenViewModel extends MultipleFutureViewModel {
   }
 
   @override
-  // TODO: implement futuresMap
   Map<String, Future Function()> get futuresMap => {
         _singleProduct: singleProduct,
         _limitedProduct: limitedProducts,

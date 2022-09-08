@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
+import 'package:muroexe_store/src/core/constants/helper/error_snackbar.dart';
 import 'package:muroexe_store/src/core/constants/helper/show_snackbar.dart';
 import 'package:muroexe_store/src/models/product_list/product_list.dart';
 import 'package:muroexe_store/src/models/signin.dart';
@@ -33,25 +34,56 @@ class ApiServices {
     return await http.get(Uri.parse(fullUrl));
   }
 
-  Future<Product> singleProduct() async {
-    var res = await getMethod(getLink: 'products/2');
-    if (res.statusCode == 200) {
-      return Product.fromJson(json.decode(res.body));
-    } else {
-      return throw 'Error From Network';
+  Future<Product?> singleProduct() async {
+    try {
+      var res = await getMethod(getLink: 'products/2');
+      if (res.statusCode == 200) {
+        return Product.fromJson(json.decode(res.body));
+      } else {
+        print('else statement');
+        SnackBarWidget().showErrorSnackBar('Else Statement');
+        // throw 'Error From Network';
+      }
+    } on SocketException {
+      print('this is a socket exception');
+      SnackBarWidget()
+          .showErrorSnackBar('You don\'t have an internet connection');
+      // throw 'You don\'t have an internet connection';
+    } catch (ex, stackTrace) {
+      print('''This is an exception coming from 
+      ${ex.toString()}
+      stackTrace is: $stackTrace
+      ''');
+      SnackBarWidget().showErrorSnackBar(ex.toString());
     }
   }
 
-  Future<List<ProductList>> limitedProduct() async {
-    var res = await getMethod(getLink: 'products?limit=5');
+  Future<List<ProductList>?> limitedProduct() async {
+    try {
+      var res = await getMethod(getLink: 'products?limit=5');
 
-    if (res.statusCode == 200) {
-      List<ProductList> data = List<ProductList>.from(
-              json.decode(res.body).map((x) => ProductList.fromProductList(x)))
-          .toList();
-      return data;
-    } else {
-      return throw 'Error From Network';
+      if (res.statusCode == 200) {
+        List<ProductList> data = List<ProductList>.from(json
+            .decode(res.body)
+            .map((x) => ProductList.fromProductList(x))).toList();
+        return data;
+      } else {
+        print('else brace in productList');
+        SnackBarWidget().showErrorSnackBar('Error From Network');
+
+        ///throw 'Error From Network';
+      }
+    } on SocketException {
+      print('this is a socket exception for ProductList');
+      SnackBarWidget()
+          .showErrorSnackBar('You don\'t have an internet connection');
+      //  throw 'You don\'t have an internet connection';
+    } catch (ex, stackTrace) {
+      print('''This is an exception coming from 
+      ${ex.toString()}
+      stackTrace is: $stackTrace
+      ''');
+      SnackBarWidget().showErrorSnackBar(ex.toString());
     }
   }
 
