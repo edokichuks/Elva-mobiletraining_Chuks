@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:muroexe_store/src/core/constants/app_color.dart';
 
-class SnackBarWidget {
+class SnackServices {
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorSnackBar(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:muroexe_store/src/services/base/failutre.dart';
 import 'package:muroexe_store/src/ui/sign_in_screen/sign_in_view.dart';
 import 'package:stacked/stacked.dart';
-import '../../app/locator.dart';
+import '../../app/app.dart';
 import '../../models/product.dart';
 import '../../models/product_list/product_list.dart';
 import '../../services/api_services/api_services.dart';

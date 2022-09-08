@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
-import 'package:muroexe_store/src/core/constants/helper/error_snackbar.dart';
+import 'package:muroexe_store/src/core/constants/helper/snackbar_services.dart';
 import 'package:muroexe_store/src/core/constants/helper/show_snackbar.dart';
 import 'package:muroexe_store/src/models/product_list/product_list.dart';
 import 'package:muroexe_store/src/models/signin.dart';
@@ -41,12 +41,12 @@ class ApiServices {
         return Product.fromJson(json.decode(res.body));
       } else {
         print('else statement');
-        SnackBarWidget().showErrorSnackBar('Else Statement');
+        SnackServices().showErrorSnackBar('Else Statement');
         // throw 'Error From Network';
       }
     } on SocketException {
       print('this is a socket exception');
-      SnackBarWidget()
+      SnackServices()
           .showErrorSnackBar('You don\'t have an internet connection');
       // throw 'You don\'t have an internet connection';
     } catch (ex, stackTrace) {
@@ -54,7 +54,7 @@ class ApiServices {
       ${ex.toString()}
       stackTrace is: $stackTrace
       ''');
-      SnackBarWidget().showErrorSnackBar(ex.toString());
+      SnackServices().showErrorSnackBar(ex.toString());
     }
   }
 
@@ -69,13 +69,13 @@ class ApiServices {
         return data;
       } else {
         print('else brace in productList');
-        SnackBarWidget().showErrorSnackBar('Error From Network');
+        SnackServices().showErrorSnackBar('Error From Network');
 
         ///throw 'Error From Network';
       }
     } on SocketException {
       print('this is a socket exception for ProductList');
-      SnackBarWidget()
+      SnackServices()
           .showErrorSnackBar('You don\'t have an internet connection');
       //  throw 'You don\'t have an internet connection';
     } catch (ex, stackTrace) {
@@ -83,7 +83,7 @@ class ApiServices {
       ${ex.toString()}
       stackTrace is: $stackTrace
       ''');
-      SnackBarWidget().showErrorSnackBar(ex.toString());
+      SnackServices().showErrorSnackBar(ex.toString());
     }
   }
 
