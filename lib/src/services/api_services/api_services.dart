@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:muroexe_store/src/app/app.dart';
 import 'package:muroexe_store/src/core/constants/helper/snackbar_services.dart';
-import 'package:muroexe_store/src/core/constants/helper/show_snackbar.dart';
 import 'package:muroexe_store/src/models/product_list/product_list.dart';
 import 'package:muroexe_store/src/models/signin.dart';
+import 'package:muroexe_store/src/services/base/failutre.dart';
 
 import '../../models/product.dart';
 
@@ -140,12 +140,13 @@ class ApiServices {
       }
     } on SocketException {
       print('this is a socket exception');
-      return 'You don\'t have an internet connection';
+      throw Failure('You don\'t have an internet connection');
+
+      /// return 'You don\'t have an internet connection';
     } on FormatException {
-      _snackbarService
-          .showErrorSnackBar('Username or password is incorrect at format');
-    } catch (ex) {
-      _snackbarService.showErrorSnackBar(ex.toString());
+      throw Failure('Username or password is incorrect at format');
+    } on Failure catch (ex) {
+      throw Failure(ex.message);
     }
   }
 }

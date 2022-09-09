@@ -15,13 +15,9 @@ const String _singleProduct = 'singleProduct';
 const String _limitedProduct = 'limitedProduct';
 
 class HomeScreenViewModel extends MultipleFutureViewModel {
-  final String _title = 'Sneakers';
-
   final ApiServices _apiServices = locator<ApiServices>();
   final _navigationServices = locator<NavigationService>();
   final _snackbarServices = locator<SnackServices>();
-
-  String get title => _title;
 
   String advertText = '-10% First APP purchase -> Voucher: APP10';
   String networkErrorText = 'Check your network connections';
