@@ -4,7 +4,6 @@ import 'package:muroexe_store/src/core/constants/app_color.dart';
 import 'package:muroexe_store/src/core/constants/helper/show_snackbar.dart';
 import 'package:muroexe_store/src/core/extensions/validation_extension.dart';
 import 'package:muroexe_store/src/models/signin.dart';
-import 'package:muroexe_store/src/services/api_services/api_services.dart';
 import 'package:muroexe_store/src/ui/sign_in_screen/sign_in_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -176,15 +175,15 @@ class SignInView extends HookWidget {
                                 const Color(0xff3F00FF)),
                           ),
                           onPressed: () {
-                            model.signIn(
-                                context,
-                                Signin(
-                                    username: emailController.text.trim(),
-                                    password: passwordController.text.trim())
-                                //   const Signin(
-                                //       username: 'mor_2314', password: '83r5^_'),
-                                // );
-                                );
+                            if (_formKey.currentState!.validate()) {
+                              model.signIn(Signin(
+                                      username: emailController.text.trim(),
+                                      password: passwordController.text.trim())
+                                  //   const Signin(
+                                  //       username: 'mor_2314', password: '83r5^_'),
+                                  // );
+                                  );
+                            }
                           },
                           child: const Text(
                             'Sign in',

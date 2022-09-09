@@ -6,6 +6,7 @@
 
 // ignore_for_file: public_member_api_docs, unused_import, non_constant_identifier_names
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -15,9 +16,9 @@ import '../ui/sign_in_screen/sign_in_view.dart';
 import '../ui/splash_screen/splash_screen_view.dart';
 
 class Routes {
-  static const String homeScreenView = '/';
+  static const String homeScreenView = '/home-screen-view';
   static const String signInView = '/sign-in-view';
-  static const String splashScreenView = '/splash-screen-view';
+  static const String splashScreenView = '/';
   static const all = <String>{
     homeScreenView,
     signInView,
@@ -37,13 +38,13 @@ class StackedRouter extends RouterBase {
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, StackedRouteFactory>{
     HomeScreenView: (data) {
-      return MaterialPageRoute<dynamic>(
+      return CupertinoPageRoute<dynamic>(
         builder: (context) => const HomeScreenView(),
         settings: data,
       );
     },
     SignInView: (data) {
-      return MaterialPageRoute<dynamic>(
+      return CupertinoPageRoute<dynamic>(
         builder: (context) => const SignInView(),
         settings: data,
       );

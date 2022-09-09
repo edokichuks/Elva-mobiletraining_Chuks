@@ -10,19 +10,13 @@ import '../services/api_services/api_services.dart';
 
 final locator = GetIt.instance;
 
-// setupAppLocation() {
-//   //call in a service
-//   locator.registerLazySingleton(() => ApiServices());
-//   locator.registerLazySingleton(() => SnackBarWidget());
-// }
-
 @StackedApp(routes: [
-  MaterialRoute(page: HomeScreenView, initial: true),
-  MaterialRoute(page: SignInView),
-  MaterialRoute(page: SplashScreenView),
+  CupertinoRoute(page: HomeScreenView),
+  CupertinoRoute(page: SignInView),
+  MaterialRoute(page: SplashScreenView, initial: true),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
-  LazySingleton(classType: SnackbarService),
+  LazySingleton(classType: SnackServices),
   LazySingleton(classType: ApiServices)
 ])
 class AppSetup {

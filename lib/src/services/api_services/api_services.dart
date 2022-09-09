@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
+import 'package:muroexe_store/src/app/app.dart';
 import 'package:muroexe_store/src/core/constants/helper/snackbar_services.dart';
 import 'package:muroexe_store/src/core/constants/helper/show_snackbar.dart';
 import 'package:muroexe_store/src/models/product_list/product_list.dart';
@@ -12,6 +13,7 @@ import '../../models/product.dart';
 @lazySingleton
 class ApiServices {
   static const String apiBase = 'https://fakestoreapi.com/';
+  final _snackbarService = locator<SnackServices>();
 
   postMethod({data, apiUrl}) async {
     var headers = {'Content-Type': 'application/json'};
@@ -87,7 +89,7 @@ class ApiServices {
     }
   }
 
-  Future signIn(context, Signin signInData) async {
+  Future signIn(Signin signInData) async {
     var fullLink = 'https://fakestoreapi.com/auth/login';
 
     var res = await http.post(
@@ -110,39 +112,40 @@ class ApiServices {
     try {
       if (res.statusCode == 200) {
         print(res.body);
-        showSnackBar(context, 'before the 200');
+        _snackbarService.showErrorSnackBar('before the 200');
 
         if (res.body.toString() == 'username or password is incorrect') {
-          showSnackBar(context, 'username or password is incorrect');
+          _snackbarService
+              .showErrorSnackBar('username or password is incorrect');
         } else {
           var token = jsonDecode(res.body);
           var resText = token['token'];
           print(resText);
-          showSnackBar(context, 'Signed In Successfully');
+          _snackbarService.showErrorSnackBar('Signed In Successfully');
         }
 
         print('''
           res body
           ${res.body}
           ''');
-
-        //return resText;
       } else if (res.statusCode == 401) {
         print('error user name and password');
-        showSnackBar(context, res.body);
+        _snackbarService.showErrorSnackBar(res.body);
       } else {
         print(res.statusCode);
         print(res.reasonPhrase);
-        showSnackBar(context, '${res.reasonPhrase}');
+
+        _snackbarService.showErrorSnackBar(res.reasonPhrase.toString());
         return res.statusCode;
       }
     } on SocketException {
       print('this is a socket exception');
       return 'You don\'t have an internet connection';
     } on FormatException {
-      showSnackBar(context, 'username or password is incorrect at format');
+      _snackbarService
+          .showErrorSnackBar('Username or password is incorrect at format');
     } catch (ex) {
-      showSnackBar(context, ex.toString());
+      _snackbarService.showErrorSnackBar(ex.toString());
     }
   }
 }

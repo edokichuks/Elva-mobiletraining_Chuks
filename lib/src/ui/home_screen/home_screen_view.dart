@@ -22,7 +22,8 @@ class HomeScreenView extends StatelessWidget {
               backgroundColor: Colors.grey.shade100,
               actions: [
                 IconButton(
-                  onPressed: () => model.navigateToSignIn(context),
+                  onPressed: () => model.navigateToSignIn(),
+                  padding: const EdgeInsets.only(right: 5),
                   icon: Icon(
                     Icons.search,
                     size: 30,
@@ -81,42 +82,44 @@ class HomeScreenView extends StatelessWidget {
                               child: CircularProgressIndicator(
                               strokeWidth: 2,
                             ))
-                          : Stack(
-                              children: [
-                                Image.network(
-                                  model.product!.pImagePath,
-                                  filterQuality: FilterQuality.high,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(24.0),
-                                  child: RichText(
-                                    text: TextSpan(
-                                        text: 'EXTRA',
-                                        style: TextStyle(
-                                          fontSize: 40,
-                                          color: Colors.grey.shade800,
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text: '\nSALES\n',
+                          : model.product == null
+                              ? Center(child: Text(model.networkErrorText))
+                              : Stack(
+                                  children: [
+                                    Image.network(
+                                      model.product!.pImagePath,
+                                      filterQuality: FilterQuality.high,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(24.0),
+                                      child: RichText(
+                                        text: TextSpan(
+                                            text: 'EXTRA',
                                             style: TextStyle(
-                                              fontSize: 60,
-                                              color: Colors.grey.shade200,
-                                              fontWeight: FontWeight.w900,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: 'Up to 60%',
-                                            style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 40,
                                               color: Colors.grey.shade800,
                                             ),
-                                          ),
-                                        ]),
-                                  ),
-                                )
-                              ],
-                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: '\nSALES\n',
+                                                style: TextStyle(
+                                                  fontSize: 60,
+                                                  color: Colors.grey.shade200,
+                                                  fontWeight: FontWeight.w900,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: 'Up to 60%',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.grey.shade800,
+                                                ),
+                                              ),
+                                            ]),
+                                      ),
+                                    )
+                                  ],
+                                ),
                   Center(
                     heightFactor: 2.0,
                     child: Text(
@@ -135,97 +138,106 @@ class HomeScreenView extends StatelessWidget {
                               child: CircularProgressIndicator(
                               strokeWidth: 2,
                             ))
-                          : GridView.builder(
-                              itemCount: 4, //model.limitedProductData!.length,
-                              shrinkWrap: true,
-                              //addRepaintBoundaries: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 10,
-                                mainAxisExtent: 300,
-                              ),
-                              itemBuilder: (_, index) => Container(
-                                height: 350,
-                                width: 150,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white, //Colors.grey.shade200,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Stack(
+                          : model.limitedProductData == null
+                              ? Center(child: Text(model.networkErrorText))
+                              : GridView.builder(
+                                  itemCount:
+                                      4, //model.limitedProductData!.length,
+                                  shrinkWrap: true,
+                                  //addRepaintBoundaries: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 10,
+                                    mainAxisExtent: 300,
+                                  ),
+                                  itemBuilder: (_, index) => Container(
+                                    height: 350,
+                                    width: 150,
+                                    decoration: const BoxDecoration(
+                                      color:
+                                          Colors.white, //Colors.grey.shade200,
+                                    ),
+                                    child: Column(
                                       children: [
-                                        Image.network(
-                                          model.limitedProductData![index].image
-                                              .toString(),
-                                          height: 200,
-                                          width: 250,
-                                          alignment: Alignment.center,
-                                          fit: BoxFit.contain,
+                                        Stack(
+                                          children: [
+                                            Image.network(
+                                              model.limitedProductData![index]
+                                                  .image
+                                                  .toString(),
+                                              height: 200,
+                                              width: 250,
+                                              alignment: Alignment.center,
+                                              fit: BoxFit.contain,
+                                            ),
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Container(
+                                                height: 30,
+                                                width: 40,
+                                                color: Colors.red.shade700,
+                                                alignment: Alignment.center,
+                                                child: const Text(
+                                                  '60%',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                                alignment: Alignment.topRight,
+                                                child: Icon(
+                                                  Icons
+                                                      .favorite_border_outlined,
+                                                  color: Colors.grey.shade800,
+                                                  size: 30,
+                                                )),
+                                          ],
                                         ),
-                                        Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Container(
-                                            height: 30,
-                                            width: 40,
-                                            color: Colors.red.shade700,
-                                            alignment: Alignment.center,
-                                            child: const Text(
-                                              '60%',
-                                              style: TextStyle(
-                                                  color: Colors.white),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 6.0, horizontal: 12),
+                                          child: Text(
+                                            model.limitedProductData![index]
+                                                .title
+                                                .toString(),
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                         ),
-                                        Align(
-                                            alignment: Alignment.topRight,
-                                            child: Icon(
-                                              Icons.favorite_border_outlined,
-                                              color: Colors.grey.shade800,
-                                              size: 30,
-                                            )),
+                                        RichText(
+                                          text: TextSpan(
+                                              text:
+                                                  '\$${model.limitedProductData![index].price.toString()} ',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  overflow: TextOverflow.fade,
+                                                  fontWeight: FontWeight.w800,
+                                                  color: Colors.red
+                                                      .shade800 //Colors.grey.shade800,
+                                                  ),
+                                              children: [
+                                                TextSpan(
+                                                    text: '\$99.00',
+                                                    style: TextStyle(
+                                                      color:
+                                                          Colors.grey.shade800,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      decoration: TextDecoration
+                                                          .lineThrough,
+                                                    ))
+                                              ]),
+                                        ),
                                       ],
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 6.0, horizontal: 12),
-                                      child: Text(
-                                        model.limitedProductData![index].title
-                                            .toString(),
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                          text:
-                                              '\$${model.limitedProductData![index].price.toString()} ',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              overflow: TextOverflow.fade,
-                                              fontWeight: FontWeight.w800,
-                                              color: Colors.red
-                                                  .shade800 //Colors.grey.shade800,
-                                              ),
-                                          children: [
-                                            TextSpan(
-                                                text: '\$99.00',
-                                                style: TextStyle(
-                                                  color: Colors.grey.shade800,
-                                                  fontWeight: FontWeight.w600,
-                                                  decoration: TextDecoration
-                                                      .lineThrough,
-                                                ))
-                                          ]),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
                   const SizedBox(
                     height: 30,
                   ),

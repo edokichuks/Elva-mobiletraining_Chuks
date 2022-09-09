@@ -11,7 +11,7 @@ class SplashScreenView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SplashScreenViewModel>.reactive(
       viewModelBuilder: () => SplashScreenViewModel(),
-      onModelReady: (viewModel) => viewModel.waitTime(context),
+      onModelReady: (viewModel) => viewModel.waitTime(),
       builder: (context, data, child) => Scaffold(
         backgroundColor: Muroexe.mainColor,
         body: Center(
