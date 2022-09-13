@@ -1,16 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:injectable/injectable.dart';
 import 'package:muroexe_store/src/app/app.dart';
 import 'package:muroexe_store/src/core/constants/helper/snackbar_services.dart';
 import 'package:muroexe_store/src/models/product_list/product_list.dart';
 import 'package:muroexe_store/src/models/signin.dart';
-import 'package:muroexe_store/src/services/base/failutre.dart';
-
+import 'package:muroexe_store/src/services/base/failure.dart';
 import '../../models/product.dart';
 
-@lazySingleton
 class ApiServices {
   static const String apiBase = 'https://fakestoreapi.com/';
   final _snackbarService = locator<SnackServices>();
@@ -43,21 +40,21 @@ class ApiServices {
         return Product.fromJson(json.decode(res.body));
       } else {
         print('else statement');
-        SnackServices().showErrorSnackBar('Else Statement');
-        // throw 'Error From Network';
+        _snackbarService.showErrorSnackBar('Else Statement');
       }
     } on SocketException {
       print('this is a socket exception');
-      SnackServices()
+
+      _snackbarService
           .showErrorSnackBar('You don\'t have an internet connection');
-      // throw 'You don\'t have an internet connection';
     } catch (ex, stackTrace) {
       print('''This is an exception coming from 
       ${ex.toString()}
       stackTrace is: $stackTrace
       ''');
-      SnackServices().showErrorSnackBar(ex.toString());
+      _snackbarService.showErrorSnackBar(ex.toString());
     }
+    return null;
   }
 
   Future<List<ProductList>?> limitedProduct() async {
@@ -71,22 +68,20 @@ class ApiServices {
         return data;
       } else {
         print('else brace in productList');
-        SnackServices().showErrorSnackBar('Error From Network');
-
-        ///throw 'Error From Network';
+        _snackbarService.showErrorSnackBar('Error from network');
       }
     } on SocketException {
       print('this is a socket exception for ProductList');
-      SnackServices()
+      _snackbarService
           .showErrorSnackBar('You don\'t have an internet connection');
-      //  throw 'You don\'t have an internet connection';
     } catch (ex, stackTrace) {
       print('''This is an exception coming from 
       ${ex.toString()}
       stackTrace is: $stackTrace
       ''');
-      SnackServices().showErrorSnackBar(ex.toString());
+      _snackbarService.showErrorSnackBar(ex.toString());
     }
+    return null;
   }
 
   Future signIn(Signin signInData) async {
@@ -98,7 +93,6 @@ class ApiServices {
 
       ///Or use this
       /// jsonEncode(
-      ///
       ///   signInData.toSignIn(),
       /// ),
 
@@ -107,13 +101,10 @@ class ApiServices {
         'Accept': 'application/json'
       },
     );
-    // print('This is the res ${res.body}');
-
     try {
       if (res.statusCode == 200) {
         print(res.body);
         _snackbarService.showErrorSnackBar('before the 200');
-
         if (res.body.toString() == 'username or password is incorrect') {
           _snackbarService
               .showErrorSnackBar('username or password is incorrect');
@@ -123,7 +114,6 @@ class ApiServices {
           print(resText);
           _snackbarService.showErrorSnackBar('Signed In Successfully');
         }
-
         print('''
           res body
           ${res.body}
@@ -134,7 +124,6 @@ class ApiServices {
       } else {
         print(res.statusCode);
         print(res.reasonPhrase);
-
         _snackbarService.showErrorSnackBar(res.reasonPhrase.toString());
         return res.statusCode;
       }

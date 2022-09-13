@@ -1,8 +1,8 @@
 import 'dart:core';
-import 'package:flutter/material.dart';
+
 import 'package:muroexe_store/src/app/app.router.dart';
-import 'package:muroexe_store/src/services/base/failutre.dart';
-import 'package:muroexe_store/src/ui/sign_in_screen/sign_in_view.dart';
+import 'package:muroexe_store/src/services/base/failure.dart';
+
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../../app/app.dart';

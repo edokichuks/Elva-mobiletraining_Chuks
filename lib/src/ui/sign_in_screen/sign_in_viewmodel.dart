@@ -1,7 +1,7 @@
 import 'package:muroexe_store/src/core/constants/helper/snackbar_services.dart';
 import 'package:muroexe_store/src/models/signin.dart';
 import 'package:muroexe_store/src/services/api_services/api_services.dart';
-import 'package:muroexe_store/src/services/base/failutre.dart';
+import 'package:muroexe_store/src/services/base/failure.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../app/app.dart';
@@ -11,7 +11,7 @@ class SignInViewModel extends FutureViewModel {
   String forgotPassword = 'Forgot your password?';
   String createAccount = 'No account? Create one here >';
 
-  final signin = Signin();
+  final signin = const Signin();
   final _snackbarServices = locator<SnackServices>();
   final _apiServices = locator<ApiServices>();
 
