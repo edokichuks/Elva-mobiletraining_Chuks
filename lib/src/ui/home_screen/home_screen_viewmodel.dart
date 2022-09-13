@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:muroexe_store/src/app/app.router.dart';
 import 'package:muroexe_store/src/services/base/failure.dart';
@@ -7,7 +8,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../../app/app.dart';
 import '../../core/constants/helper/snackbar_services.dart';
-import '../../models/product.dart';
+
 import '../../models/product_list/product_list.dart';
 import '../../services/api_services/api_services.dart';
 
@@ -22,12 +23,8 @@ class HomeScreenViewModel extends MultipleFutureViewModel {
   String advertText = '-10% First APP purchase -> Voucher: APP10';
   String networkErrorText = 'Check your network connections';
 
-  ///type definition
-  Product? _product;
-  List<ProductList>? _limitedProductData;
-
   ///Map data made accessible
-  List<ProductList>? get limitedProductData => dataMap![_limitedProduct];
+  List<Product>? get limitedProductData => dataMap![_limitedProduct];
   Product? get product => dataMap![_singleProduct];
 
   ///check for busy....isBusy?
@@ -37,50 +34,30 @@ class HomeScreenViewModel extends MultipleFutureViewModel {
   void navigateToSignIn() => _navigationServices.navigateTo(Routes.signInView);
 
   Future<Product?> singleProduct() async {
-    setBusy(true);
     try {
-      final Product? result = await _apiServices.singleProduct();
-
-      _product = result;
-      return result!;
+      setBusy(true);
+      final Product result = await _apiServices.singleProduct();
+      return result;
       // var timeOut = await runBusyFuture(requestTimeOut());
-    } on Failure catch (ex, stackTrace) {
-      print('''
-      This is the exception
-      ${ex.toString()},
-      located at: $stackTrace
-      ''');
-
-      _snackbarServices.showErrorSnackBar(ex.toString());
-    } finally {
-      setBusy(false);
-    }
-
-    ///to remove this line
-    return _product;
-  }
-
-  Future<List<ProductList>> limitedProducts() async {
-    setBusy(true);
-
-    try {
-      final List<ProductList>? limited = await _apiServices.limitedProduct();
-
-      _limitedProductData = limited;
-
-      return _limitedProductData as List<ProductList>;
     } on Failure catch (ex) {
-      print('''
-      This is the exception
-      ${ex.message}
-      ''');
+      log(ex.devMessage);
       _snackbarServices.showErrorSnackBar(ex.message);
     } finally {
       setBusy(false);
     }
+  }
 
-    ///remove this line of code
-    return _limitedProductData as List<ProductList>;
+  Future<List<Product>?> limitedProducts() async {
+    setBusy(true);
+
+    try {
+      final List<Product> limited = await _apiServices.limitedProduct();
+      return limited;
+    } on Failure catch (ex) {
+      _snackbarServices.showErrorSnackBar(ex.message);
+    } finally {
+      setBusy(false);
+    }
   }
 
   Future requestTimeOut() async {

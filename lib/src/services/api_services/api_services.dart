@@ -1,141 +1,96 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
-import 'package:http/http.dart' as http;
+
+import 'package:http/http.dart';
 import 'package:muroexe_store/src/app/app.dart';
 import 'package:muroexe_store/src/core/constants/helper/snackbar_services.dart';
 import 'package:muroexe_store/src/models/product_list/product_list.dart';
 import 'package:muroexe_store/src/models/signin.dart';
 import 'package:muroexe_store/src/services/base/failure.dart';
-import '../../models/product.dart';
 
+const String scheme = 'https';
+const String host = 'fakestoreapi.com';
+
+Uri singleProductUri({required int id}) =>
+    Uri(scheme: scheme, host: host, path: '/products/$id');
+Uri limitedProductUri({required int limit}) =>
+    Uri(scheme: scheme, host: host, path: '/products', query: 'limit=$limit');
+Uri allProducts = Uri(scheme: scheme, host: host, path: '/products');
+Uri signInUri = Uri(scheme: scheme, host: host, path: '/auth/login');
+
+///https://fakestoreapi.com/products?limit=5
 class ApiServices {
   static const String apiBase = 'https://fakestoreapi.com/';
-  final _snackbarService = locator<SnackServices>();
 
-  postMethod({data, apiUrl}) async {
-    var headers = {'Content-Type': 'application/json'};
-    var fullUrl = apiBase + apiUrl;
-    var request = http.Request(
-      'POST',
-      Uri.parse(fullUrl),
-    );
+  final _client = Client();
 
-    request.body = json.encode(data);
-    request.headers.addAll(headers);
-
-    var response = await request.send();
+  Future<Response> _post(
+      {required Map<String, dynamic> data, required Uri uri}) async {
+    log('Making request to $uri');
+    final Response response = await _client.post(uri, body: data);
+    log('Response from $uri\n ${response.body}');
     return response;
   }
 
-  static getMethod({getLink}) async {
-    var fullUrl = apiBase + getLink;
-
-    return await http.get(Uri.parse(fullUrl));
+  Future<Response> _getMethod({required Uri uri}) async {
+    log('Making request to $uri');
+    final Response response = await _client.get(uri);
+    log('Response from $uri\n ${response.body}');
+    return response;
   }
 
-  Future<Product?> singleProduct() async {
+  Future<Product> singleProduct() async {
     try {
-      var res = await getMethod(getLink: 'products/2');
-      if (res.statusCode == 200) {
-        return Product.fromJson(json.decode(res.body));
-      } else {
-        print('else statement');
-        _snackbarService.showErrorSnackBar('Else Statement');
-      }
-    } on SocketException {
-      print('this is a socket exception');
-
-      _snackbarService
-          .showErrorSnackBar('You don\'t have an internet connection');
+      Response res = await _getMethod(uri: singleProductUri(id: 3));
+      Map<String, dynamic> decodedResponse = jsonDecode(res.body);
+      return Product.fromJson(decodedResponse);
+    } on SocketException catch (ex, stackTrace) {
+      throw Failure(
+          message: 'You don\'t have internet connection',
+          devMessage: stackTrace.toString());
     } catch (ex, stackTrace) {
-      print('''This is an exception coming from 
-      ${ex.toString()}
-      stackTrace is: $stackTrace
-      ''');
-      _snackbarService.showErrorSnackBar(ex.toString());
+      throw Failure(
+          message: 'Try again',
+          devMessage: 'Error:$ex, Stacktrace: $stackTrace');
     }
-    return null;
   }
 
-  Future<List<ProductList>?> limitedProduct() async {
+  Future<List<Product>> limitedProduct() async {
     try {
-      var res = await getMethod(getLink: 'products?limit=5');
-
-      if (res.statusCode == 200) {
-        List<ProductList> data = List<ProductList>.from(json
-            .decode(res.body)
-            .map((x) => ProductList.fromProductList(x))).toList();
-        return data;
-      } else {
-        print('else brace in productList');
-        _snackbarService.showErrorSnackBar('Error from network');
-      }
-    } on SocketException {
-      print('this is a socket exception for ProductList');
-      _snackbarService
-          .showErrorSnackBar('You don\'t have an internet connection');
+      Response res = await _getMethod(uri: limitedProductUri(limit: 5));
+      List<Product> data = List<Product>.from(
+          json.decode(res.body).map((x) => Product.fromJson(x))).toList();
+      return data;
+    } on SocketException catch (ex, stackTrace) {
+      throw Failure(
+          message: 'You don\'t have internet connection',
+          devMessage: stackTrace.toString());
     } catch (ex, stackTrace) {
-      print('''This is an exception coming from 
-      ${ex.toString()}
-      stackTrace is: $stackTrace
-      ''');
-      _snackbarService.showErrorSnackBar(ex.toString());
+      throw Failure(
+          message: 'Try again',
+          devMessage: 'Error:$ex, Stacktrace: $stackTrace');
     }
-    return null;
   }
 
   Future signIn(Signin signInData) async {
-    var fullLink = 'https://fakestoreapi.com/auth/login';
-
-    var res = await http.post(
-      Uri.parse(fullLink),
-      body: signInData.toJson(),
-
-      ///Or use this
-      /// jsonEncode(
-      ///   signInData.toSignIn(),
-      /// ),
-
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-    );
     try {
-      if (res.statusCode == 200) {
-        print(res.body);
-        _snackbarService.showErrorSnackBar('before the 200');
-        if (res.body.toString() == 'username or password is incorrect') {
-          _snackbarService
-              .showErrorSnackBar('username or password is incorrect');
-        } else {
-          var token = jsonDecode(res.body);
-          var resText = token['token'];
-          print(resText);
-          _snackbarService.showErrorSnackBar('Signed In Successfully');
-        }
-        print('''
-          res body
-          ${res.body}
-          ''');
-      } else if (res.statusCode == 401) {
-        print('error user name and password');
-        _snackbarService.showErrorSnackBar(res.body);
-      } else {
-        print(res.statusCode);
-        print(res.reasonPhrase);
-        _snackbarService.showErrorSnackBar(res.reasonPhrase.toString());
-        return res.statusCode;
-      }
-    } on SocketException {
-      print('this is a socket exception');
-      throw Failure('You don\'t have an internet connection');
-
-      /// return 'You don\'t have an internet connection';
+      log('Attempting to sign in');
+      await _post(data: signInData.toSignIn(), uri: signInUri);
+      log('Signed successfully');
+    } on SocketException catch (ex, stackTrace) {
+      throw Failure(
+          message: 'You don\'t have internet connection',
+          devMessage: stackTrace.toString());
     } on FormatException {
-      throw Failure('Username or password is incorrect at format');
-    } on Failure catch (ex) {
-      throw Failure(ex.message);
+      throw const Failure(
+        message: 'Username or password is incorrect',
+        devMessage: 'Username or password is incorrect at format',
+      );
+    } catch (ex, stackTrace) {
+      throw Failure(
+          message: 'Try again',
+          devMessage: 'Error:$ex, Stacktrace: $stackTrace');
     }
   }
 }

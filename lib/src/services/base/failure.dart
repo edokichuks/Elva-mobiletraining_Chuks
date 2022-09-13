@@ -1,21 +1,10 @@
-class Failure {
+import 'package:equatable/equatable.dart';
+
+class Failure extends Equatable {
   final String message;
-  Failure(this.message);
+  final String devMessage;
+  const Failure({required this.message, required this.devMessage});
 
   @override
-  String toString() {
-    // TODO: implement toString
-    return "Failure: $message \n(From Failure class)";
-  }
-
-  @override
-  bool operator ==(Object other) {
-    // TODO: implement ==
-    if (identical(this, other)) return true;
-
-    return other is Failure && other.message == message;
-  }
-
-  @override
-  int get hashCode => message.hashCode;
+  List<Object?> get props => [message, devMessage];
 }
