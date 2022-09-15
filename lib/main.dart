@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muroexe_store/src/app/app.locator.dart';
+import 'package:muroexe_store/src/core/constants/helper/setup_snackbar_ui.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -7,6 +8,7 @@ import 'src/app/app.router.dart';
 
 void main() async {
   await setupLocator();
+  setupSnackbarUi();
   runApp(const MyApp());
 }
 

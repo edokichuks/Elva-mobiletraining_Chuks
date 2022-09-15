@@ -17,7 +17,10 @@ final locator = GetIt.instance;
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: SnackServices),
-  LazySingleton(classType: ApiServices)
+  LazySingleton(classType: ApiServices),
+
+  ///SnackBarService from stack_services package
+  LazySingleton(classType: SnackbarService),
 ])
 class AppSetup {
   /** Serves no purpose besides having annotation attached to it */

@@ -96,7 +96,7 @@ class SignInView extends HookWidget {
                                 value = model.isFilled = true;
                               },
                               child: TextFormField(
-                                validator: context.validateEmail,
+                                //validator: context.validateEmail,
                                 controller: emailController,
                                 keyboardType: TextInputType.emailAddress,
                                 cursorColor: Muroexe.smallTextColor,
@@ -165,31 +165,40 @@ class SignInView extends HookWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.grey.shade900),
-                            foregroundColor: MaterialStateProperty.all(
-                                const Color(0xff3F00FF)),
-                            overlayColor: MaterialStateProperty.all(
-                                const Color(0xff3F00FF)),
-                          ),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              model.signIn(Signin(
-                                      username: emailController.text.trim(),
-                                      password: passwordController.text.trim())
-                                  //   const Signin(
-                                  //       username: 'mor_2314', password: '83r5^_'),
-                                  // );
-                                  );
-                            }
-                          },
-                          child: const Text(
-                            'Sign in',
-                            style: TextStyle(color: Colors.white),
-                          ),
+                        const SizedBox(
+                          height: 5,
                         ),
+                        model.isBusy
+                            ? const CircularProgressIndicator(
+                                strokeWidth: 2,
+                              )
+                            : ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.grey.shade900),
+                                  foregroundColor: MaterialStateProperty.all(
+                                      const Color(0xff3F00FF)),
+                                  overlayColor: MaterialStateProperty.all(
+                                      const Color(0xff3F00FF)),
+                                ),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    model.signIn(Signin(
+                                            username:
+                                                emailController.text.trim(),
+                                            password:
+                                                passwordController.text.trim())
+                                        //   const Signin(
+                                        //       username: 'mor_2314', password: '83r5^_'),
+                                        // );
+                                        );
+                                  }
+                                },
+                                child: const Text(
+                                  'Sign in',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
                         const SizedBox(
                           height: 10,
                         ),

@@ -1,11 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:http/http.dart';
-import 'package:muroexe_store/src/app/app.dart';
-import 'package:muroexe_store/src/core/constants/helper/snackbar_services.dart';
-import 'package:muroexe_store/src/models/product_list/product_list.dart';
+import 'package:muroexe_store/src/models/product/product.dart';
 import 'package:muroexe_store/src/models/signin.dart';
 import 'package:muroexe_store/src/services/base/failure.dart';
 
@@ -19,10 +16,7 @@ Uri limitedProductUri({required int limit}) =>
 Uri allProducts = Uri(scheme: scheme, host: host, path: '/products');
 Uri signInUri = Uri(scheme: scheme, host: host, path: '/auth/login');
 
-///https://fakestoreapi.com/products?limit=5
 class ApiServices {
-  static const String apiBase = 'https://fakestoreapi.com/';
-
   final _client = Client();
 
   Future<Response> _post(
@@ -76,7 +70,13 @@ class ApiServices {
   Future signIn(Signin signInData) async {
     try {
       log('Attempting to sign in');
+      //Response res =
       await _post(data: signInData.toSignIn(), uri: signInUri);
+      // if (res.body.toString() == 'username or password is incorrect') {
+      //   const Failure(
+      //       message: 'username or password is incorrect',
+      //       devMessage: 'devMessage: username or password is incorrect');
+      // }
       log('Signed successfully');
     } on SocketException catch (ex, stackTrace) {
       throw Failure(
